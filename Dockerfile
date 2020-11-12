@@ -1,8 +1,6 @@
 FROM centos:centos7
 
 ARG AMBARI_VERSION="2.7.4.0"
-#ARG ADMIN_UID=1000
-#ARG ADMIN_UNAME="mhyun"
 
 LABEL maintainer="devlog.moonduck@gmail.com" 
 
@@ -23,8 +21,11 @@ RUN chmod 555 /usr/bin/systemctl
 #Make chronyd work
 COPY chronyd.service /usr/lib/systemd/system/chronyd.service 
 
-#RUN adduser $ADMIN_UNAME -u $ADMIN_UID -g 0 && passwd -d $ADMIN_UNAME
+#Create directory for user defined scripts
+RUN mkdir -p /entry/usr && mkdir /entry/init
+COPY scripts/run.sh /entry
+COPY scripts/add_admin.sh /entry/init
 
 VOLUME [ "/sys/fs/cgroup" ]
 
-CMD ["systemctl"]
+ENTRYPOINT [ "/entry/run.sh" ]
