@@ -26,6 +26,4 @@ RUN mkdir -p /entry/usr && mkdir /entry/init
 COPY scripts/run.sh /entry
 COPY scripts/add_admin.sh /entry/init
 
-VOLUME [ "/sys/fs/cgroup" ]
-
 ENTRYPOINT [ "/entry/run.sh" ]
